@@ -4,33 +4,37 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
-Base = declarative_base()
-
-class SmartValue(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    date = Column(String(20), nullable=False)
-    device = Column(String(10), nullable=False)
-    smartid = Column(Integer)
-    smartvalue = Column(Integer)
+from get_smart_values import SmartValue, Base
 
 if __name__ == '__main__':
     app = Flask(__name__)
 
     @app.route('/')
     @app.route('/index')
-    def hello_world():
+    @app.route('/sda')
+    def sda():
+        device = ('/dev/sda','sda')
         engine = create_engine('sqlite:///./smartdb.sqlite')
         Base.metadata.bind = engine
 
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
-        data = session.query(SmartValue).all()
 
-        return render_template('index.html', title='LVS Config', data=data)
+        data = session.query(SmartValue).filter(SmartValue.device == device[0]).all()
+
+        return render_template('index.html', title='Smart Data of %s' % device[1], data=data)
+
+    @app.route('/sdb')
+    def sdb():
+        device = ('/dev/sdb','sdb')
+        engine = create_engine('sqlite:///./smartdb.sqlite')
+        Base.metadata.bind = engine
+
+        DBSession = sessionmaker(bind=engine)
+        session = DBSession()
+        data = session.query(SmartValue).filter(SmartValue.device == device[0]).all()
+
+        return render_template('index.html', title='Smart Data of %s' % device[1], data=data)
 
     app.run(host='0.0.0.0', debug=True)
 
