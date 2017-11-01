@@ -1,8 +1,8 @@
-import os,re,sys,subprocess
+import os,re,sys,subprocess,datetime
 
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base, Address, Base, Person
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
 Base = declarative_base()
@@ -40,6 +40,23 @@ class SmartValueManager(object):
     def store_values(self,values):
         print values
 
+        engine = create_engine('sqlite:///%s' % (self.sqlite_file))
+        Base.metadata.bind = engine
+
+        cur_date = datetime.datetime.now()
+        DBSession = sessionmaker(bind=engine)
+        session = DBSession()
+
+        for v in values:
+            sv = SmartValue()
+            sv.date = str(cur_date.isoformat())
+            sv.device = self.device
+            sv.smartid = v[0]
+            sv.smartvalue = v[1]
+            session.add(sv)
+
+        session.commit()
+
     def create_db(self):
         engine = create_engine('sqlite:///%s' % (self.sqlite_file))
         Base.metadata.create_all(engine)
@@ -63,5 +80,7 @@ if __name__ == '__main__':
                           ('247 Unknown_Attribute',247,'Host Program NAND Pages Count'), 
                           ('248 Unknown_Attribute',248,'FTL Program NAND Pages Count')
                           ]
-             print svf.get_values()
+             vals = svf.get_values()
+             print vals
+             svf.store_values(vals)
 
