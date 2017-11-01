@@ -7,9 +7,9 @@
 	<div class="row">
 		<div class="col-md-12">
 			<table class="table table-striped">
-				<tr><th>Date</th><th>Smart ID</th><th>Smart Value</th></tr>
+				<tr><th>Date</th><th>rsc</th><th>pfc</th><th>efc</th><th>abec</th><th>urnb</th><th>et</th><th>rec</th><th>plr</th><th>hpnpc</th><th>fpnpc</th></tr>
 				{% for d in data %}
-					<tr><td>{{ d['date'] }}</td><td>{{ d['smartid'] }}</td><td>{{ d['smartvalue'] }}</td></tr>
+					<tr><td>{{ d['date'] }}</td><td>{{ d['rsc'] }}</td><td>{{ d['pfc'] }}</td><td>{{ d['efc'] }}</td><td>{{ d['abec'] }}</td><td>{{ d['urnb'] }}</td><td>{{ d['et'] }}</td><td>{{ d['rec'] }}</td><td>{{ d['plr'] }}</td><td>{{ d['hpnpc'] }}</td><td>{{ d['fpnpc'] }}</td></tr>
 				{% endfor %}
 			</table>
 		</div>
