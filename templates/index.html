@@ -22,7 +22,7 @@
     <button id="randomizeData">Randomize Data</button>
     <script>
     var lineChartData = {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
         datasets: [{
             label: "My First dataset",
             borderColor: window.chartColors.red,
