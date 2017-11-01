@@ -24,35 +24,28 @@
     var lineChartData = {
         labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
         datasets: [{
-            label: "My First dataset",
+            label: "hpnpc",
             borderColor: window.chartColors.red,
             backgroundColor: window.chartColors.red,
             fill: false,
+
             data: [
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor()
+                {% for d in data %}
+					{{ d['hpnpc'] }},
+				{% endfor %}
             ],
             yAxisID: "y-axis-1",
         }, {
-            label: "My Second dataset",
+            label: "fpnpc",
             borderColor: window.chartColors.blue,
             backgroundColor: window.chartColors.blue,
             fill: false,
             data: [
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor(),
-                randomScalingFactor()
+                {% for d in data %}
+					{{ d['fpnpc'] }},
+				{% endfor %}
             ],
-            yAxisID: "y-axis-2"
+            yAxisID: "y-axis-1"
         }]
     };
 
