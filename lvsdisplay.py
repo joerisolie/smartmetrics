@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
     @app.route('/')
     @app.route('/index')
+
     def hello_world():
         engine = create_engine('sqlite:///./smartdb.sqlite')
         Base.metadata.bind = engine
@@ -35,3 +36,10 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
 
 
+
+
+
+@app.route('/index/<string:do_refresh>', methods=['GET','POST'])
+def index(do_refresh=False):
+	check_init_kvs()
+	form = MessageForm()
