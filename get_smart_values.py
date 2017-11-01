@@ -14,8 +14,17 @@ class SmartValue(Base):
     id = Column(Integer, primary_key=True)
     date = Column(String(20), nullable=False)
     device = Column(String(10), nullable=False)
-    smartid = Column(Integer)
-    smartvalue = Column(Integer)
+    rsc = Column(Integer)
+    pfc = Column(Integer)
+    efc = Column(Integer)
+    abec = Column(Integer)
+    urnb = Column(Integer)
+    et = Column(Integer)
+    rec = Column(Integer)
+    plr = Column(Integer)
+    hpnpc = Column(Integer)
+    fpnpc = Column(Integer)
+
 
 class SmartValueManager(object):
     device = None
@@ -29,32 +38,31 @@ class SmartValueManager(object):
         if process.returncode != 0:
             raise OSError('Error %s' % process.returncode)
   
-        out = []
+        out = SmartValue()
         for p in self.parameters:
             for l in proc_stdout[0].strip().split('\n'):
                 if p[0] in l:
                     line = [s for s in l.split(" ") if s is not ""]
-                    out.append((p[1],int(line[9])))
+                    if p[1] == 5: out.rsc = int(line[9])
+                    elif p[1] == 171: out.pfc = int(line[9])
+                    elif p[1] == 172: out.efc = int(line[9])
+                    elif p[1] == 173: out.abec = int(line[9])
+                    elif p[1] == 180: out.urnb = int(line[9])
+                    elif p[1] == 194: out.et = int(line[9])
+                    elif p[1] == 196: out.rec = int(line[9])
+                    elif p[1] == 202: out.plr = int(line[9])
+                    elif p[1] == 247: out.hpnpc = int(line[9])
+                    elif p[1] == 248: out.fpnpc = int(line[9])
         return out
 
-    def store_values(self,values):
-        print values
-
+    def store_values(self,value):
         engine = create_engine('sqlite:///%s' % (self.sqlite_file))
         Base.metadata.bind = engine
 
         cur_date = datetime.datetime.now()
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
-
-        for v in values:
-            sv = SmartValue()
-            sv.date = str(cur_date.isoformat())
-            sv.device = self.device
-            sv.smartid = v[0]
-            sv.smartvalue = v[1]
-            session.add(sv)
-
+        session.add(value)
         session.commit()
 
     def create_db(self):
@@ -69,18 +77,18 @@ if __name__ == '__main__':
              svf.create_db()
         else:
              svf.device = sys.argv[1]
-             svf.parameters = [('5 Reallocated_Sector_Ct',5,'Reallocated Sector Count'), 
-                          ('171 Unknown_Attribute',171,'Program Fail Count'), 
-                          ('172 Unknown_Attribute',172,'Erase Fail Count'), 
-                          ('173 Unknown_Attribute',173,'Average Block-Erase Count'), 
-                          ('180 Unused_Rsvd_Blk_Cnt_Tot',180,'Unused Reserved NAND Blocks'), 
-                          ('194 Temperature_Celsius',194,'Enclosure Temperature'), 
-                          ('196 Reallocated_Event_Count',196,'Reallocation Event Count'), 
-                          ('202 Unknown_SSD_Attribute',202,'Percent Lifetime Remaining'), 
-                          ('247 Unknown_Attribute',247,'Host Program NAND Pages Count'), 
-                          ('248 Unknown_Attribute',248,'FTL Program NAND Pages Count')
+             svf.parameters = [('5 Reallocated_Sector_Ct',5,'Reallocated Sector Count','rsc'),
+                          ('171 Unknown_Attribute',171,'Program Fail Count','pfc'),
+                          ('172 Unknown_Attribute',172,'Erase Fail Count','efc'),
+                          ('173 Unknown_Attribute',173,'Average Block-Erase Count','abec'),
+                          ('180 Unused_Rsvd_Blk_Cnt_Tot',180,'Unused Reserved NAND Blocks','urnb'),
+                          ('194 Temperature_Celsius',194,'Enclosure Temperature','et'),
+                          ('196 Reallocated_Event_Count',196,'Reallocation Event Count','rec'),
+                          ('202 Unknown_SSD_Attribute',202,'Percent Lifetime Remaining','plr'),
+                          ('247 Unknown_Attribute',247,'Host Program NAND Pages Count','hpnpc'),
+                          ('248 Unknown_Attribute',248,'FTL Program NAND Pages Count','fpnpc')
                           ]
-             vals = svf.get_values()
-             print vals
-             svf.store_values(vals)
+             val = svf.get_values()
+             print val
+             svf.store_values(val)
 
