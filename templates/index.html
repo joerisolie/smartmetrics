@@ -7,7 +7,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<table class="table table-striped">
-				<tr><th>Date</th><th>Smart ID</th><th>Smart Value</th></th>
+				<tr><th>Date</th><th>Smart ID</th><th>Smart Value</th></tr>
 				{% for d in data %}
 					<tr><td>{{ d['date'] }}</td><td>{{ d['smartid'] }}</td><td>{{ d['smartvalue'] }}</td></tr>
 				{% endfor %}
