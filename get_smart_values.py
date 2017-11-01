@@ -39,6 +39,8 @@ class SmartValueManager(object):
             raise OSError('Error %s' % process.returncode)
   
         out = SmartValue()
+        out.date = datetime.datetime.now()
+        out.device = self.device
         for p in self.parameters:
             for l in proc_stdout[0].strip().split('\n'):
                 if p[0] in l:
@@ -59,7 +61,6 @@ class SmartValueManager(object):
         engine = create_engine('sqlite:///%s' % (self.sqlite_file))
         Base.metadata.bind = engine
 
-        cur_date = datetime.datetime.now()
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
         session.add(value)
