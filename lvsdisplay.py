@@ -25,6 +25,6 @@ if __name__ == '__main__':
 
         data = session.query(SmartValue).filter(SmartValue.device == device[0]).all()
 
-        return render_template('index.html', title='Smart Data of %s' % device[1], data=data)
+        return render_template('index.html', title='Smart Data of %s' % device[1], device=device, data=data)
 
     app.run(host='0.0.0.0', debug=True)
