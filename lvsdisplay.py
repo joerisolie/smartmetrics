@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template
-from sqlalchemy_declarative import Base, SmartValue
+from sqlalchemy.ext.declarative import Base, SmartValue
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
