@@ -32,7 +32,7 @@ class SmartValueManager(object):
     sqlite_file = None
 
     def get_values(self):
-        process = subprocess.Popen('smartctl -a %s' % self.device, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        process = subprocess.Popen('/usr/sbin/smartctl -a %s' % self.device, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         proc_stdout = process.communicate()
         if proc_stdout[1].strip(): print proc_stdout[1].strip()
         if process.returncode != 0:
