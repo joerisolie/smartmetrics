@@ -11,31 +11,20 @@ if __name__ == '__main__':
 
     @app.route('/')
     @app.route('/index')
-    @app.route('/sda')
-    def sda():
-        device = ('/dev/sda','sda')
+    @app.route('/index/<string:device>')
+    def index(device='sda'):
+        if device != 'sda':
+            device = ('/dev/%s' % device,device)
+        else:
+            device = ('/dev/sda','sda')
         engine = create_engine('sqlite:///./smartdb.sqlite')
         Base.metadata.bind = engine
 
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
 
-        data = session.query(SmartValue).filter(SmartValue.device == device[0]).all()
-
-        return render_template('index.html', title='Smart Data of %s' % device[1], data=data)
-
-    @app.route('/sdb')
-    def sdb():
-        device = ('/dev/sdb','sdb')
-        engine = create_engine('sqlite:///./smartdb.sqlite')
-        Base.metadata.bind = engine
-
-        DBSession = sessionmaker(bind=engine)
-        session = DBSession()
         data = session.query(SmartValue).filter(SmartValue.device == device[0]).all()
 
         return render_template('index.html', title='Smart Data of %s' % device[1], data=data)
 
     app.run(host='0.0.0.0', debug=True)
-
-
