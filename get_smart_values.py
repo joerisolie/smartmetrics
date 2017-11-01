@@ -1,7 +1,7 @@
 import os,re,sys,subprocess,datetime
 
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.ext.declarative import declarative_base, Base, SmartValue
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
