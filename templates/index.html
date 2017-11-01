@@ -16,12 +16,17 @@
 	</div>
 
 
-	<div style="width:75%;">
-        <canvas id="canvas"></canvas>
+	<div style="width:55%;">
+        <canvas id="canvas1"></canvas>
     </div>
-    <button id="randomizeData">Randomize Data</button>
+
+	<div style="width:95%;">
+        <canvas id="canvas2"></canvas>
+    </div>
+
+
     <script>
-    var lineChartData = {
+    var lineChartData1 = {
         labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
         datasets: [{
             label: "hpnpc",
@@ -49,10 +54,118 @@
         }]
     };
 
+	var lineChartData2 = {
+        labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
+        datasets: [{
+            label: "rsc",
+            borderColor: window.chartColors.red,
+            backgroundColor: window.chartColors.red,
+            fill: false,
+
+            data: [
+                {% for d in data %}
+					{{ d['rsc'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1",
+        }, {
+            label: "pfc",
+            borderColor: window.chartColors.blue,
+            backgroundColor: window.chartColors.blue,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['pfc'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1"
+        }, {
+            label: "efc",
+            borderColor: window.chartColors.yellow,
+            backgroundColor: window.chartColors.yellow,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['efc'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1"
+        }, {
+            label: "rec",
+            borderColor: window.chartColors.green,
+            backgroundColor: window.chartColors.green,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['rec'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1"
+        }]
+    };
+
+    var lineChartData3 = {
+        labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
+        datasets: [{
+            label: "abec",
+            borderColor: window.chartColors.red,
+            backgroundColor: window.chartColors.red,
+            fill: false,
+
+            data: [
+                {% for d in data %}
+					{{ d['abec'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1",
+        }, {
+            label: "urnb",
+            borderColor: window.chartColors.blue,
+            backgroundColor: window.chartColors.blue,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['urnb'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1"
+        }, {
+            label: "plr",
+            borderColor: window.chartColors.blue,
+            backgroundColor: window.chartColors.blue,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['plr'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-2"
+        }]
+    };
+
+    var lineChartData4 = {
+        labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
+        datasets: [{
+            label: "et",
+            borderColor: window.chartColors.red,
+            backgroundColor: window.chartColors.red,
+            fill: false,
+
+            data: [
+                {% for d in data %}
+					{{ d['et'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1",
+        }]
+    };
+
+
+
     window.onload = function() {
-        var ctx = document.getElementById("canvas").getContext("2d");
-        window.myLine = Chart.Line(ctx, {
-            data: lineChartData,
+        var ctx1 = document.getElementById("canvas1").getContext("2d");
+        window.myLine1 = Chart.Line(ctx1, {
+            data: lineChartData1,
             options: {
                 responsive: true,
                 hoverMode: 'index',
@@ -63,12 +176,76 @@
                 },
                 scales: {
                     yAxes: [{
-                        type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                        type: "linear",
                         display: true,
                         position: "left",
                         id: "y-axis-1",
                     }, {
-                        type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                        type: "linear",
+                        display: true,
+                        position: "right",
+                        id: "y-axis-2",
+
+                        // grid line settings
+                        gridLines: {
+                            drawOnChartArea: false,
+                        },
+                    }],
+                }
+            }
+        });
+
+        var ctx2 = document.getElementById("canvas2").getContext("2d");
+        window.myLine2 = Chart.Line(ctx2, {
+            data: lineChartData2,
+            options: {
+                responsive: true,
+                hoverMode: 'index',
+                stacked: false,
+                title:{
+                    display: true,
+                    text:'Chart.js Line Chart - Multi Axis'
+                },
+                scales: {
+                    yAxes: [{
+                        type: "linear",
+                        display: true,
+                        position: "left",
+                        id: "y-axis-1",
+                    }, {
+                        type: "linear",
+                        display: true,
+                        position: "right",
+                        id: "y-axis-2",
+
+                        // grid line settings
+                        gridLines: {
+                            drawOnChartArea: false,
+                        },
+                    }],
+                }
+            }
+        });
+
+        var ctx3 = document.getElementById("canvas3").getContext("2d");
+        window.myLine3 = Chart.Line(ctx3, {
+            data: lineChartData3,
+            options: {
+                responsive: true,
+                hoverMode: 'index',
+                stacked: false,
+                title:{
+                    display: true,
+                    text:'Chart.js Line Chart - Multi Axis'
+                },
+                scales: {
+                    yAxes: [{
+                        type: "linear",
+                        display: true,
+                        position: "left",
+                        id: "y-axis-1",
+                    }, {
+                        type: "linear",
                         display: true,
                         position: "right",
                         id: "y-axis-2",
@@ -81,17 +258,29 @@
                 }
             }
         });
-    };
 
-    document.getElementById('randomizeData').addEventListener('click', function() {
-        lineChartData.datasets.forEach(function(dataset) {
-            dataset.data = dataset.data.map(function() {
-                return randomScalingFactor();
-            });
+        var ctx4 = document.getElementById("canvas4").getContext("2d");
+        window.myLine4 = Chart.Line(ctx4, {
+            data: lineChartData4,
+            options: {
+                responsive: true,
+                hoverMode: 'index',
+                stacked: false,
+                title:{
+                    display: true,
+                    text:'Chart.js Line Chart - Multi Axis'
+                },
+                scales: {
+                    yAxes: [{
+                        type: "linear",
+                        display: true,
+                        position: "left",
+                        id: "y-axis-1",
+                    }],
+                }
+            }
         });
-
-        window.myLine.update();
-    });
+    };
     </script>
 
 {% endblock %}
