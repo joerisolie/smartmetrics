@@ -30,6 +30,9 @@
 		purple: 'rgb(153, 102, 255)',
 		grey: 'rgb(201, 203, 207)'
     };
+    window.randomScalingFactor = function() {
+		return Math.round(Samples.utils.rand(-100, 100));
+	};
     var lineChartData = {
         labels: ["January", "February", "March", "April", "May", "June", "July"],
         datasets: [{
