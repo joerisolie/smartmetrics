@@ -23,8 +23,13 @@ if __name__ == '__main__':
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
 
-        data = session.query(SmartValue).filter(SmartValue.device == device[0]).all()
-
-        return render_template('index.html', title='Smart Data of %s' % device[1], device=device, data=data)
+        data = None
+        type = 'crucial'
+        if device[1] == 'sda':
+            data = session.query(SmartValueSamsung).filter(SmartValueSamsung.device == device[0]).all()
+            return render_template('metricss.html', title='Smart Data of %s' % device[1], device=device, data=data)
+        else:
+            data = session.query(SmartValueCrucial).filter(SmartValueCrucial.device == device[0]).all()
+            return render_template('metricsc.html', title='Smart Data of %s' % device[1], device=device, data=data)
 
     app.run(host='0.0.0.0', debug=True)

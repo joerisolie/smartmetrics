@@ -152,4 +152,4 @@ if __name__ == '__main__':
                                   ]
             val = svf.get_values()
             print val
-            svf.store_values(val)
+            dbm.store_values(val)

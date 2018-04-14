@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="page-header">
+		<h1>Smart Value for {{ device[1] }}</h1>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-12">
+			<canvas id="canvas1"></canvas>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<div class="col-md-12">
+			<canvas id="canvas2"></canvas>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<div class="col-md-12">
+			<canvas id="canvas3"></canvas>
+    	</div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<div class="col-md-12">
+        	<canvas id="canvas4"></canvas>
+    	</div>
+	</div>
+
+	<hr>
+
+	<br>
+
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-striped">
+				<tr><th>Date</th><th>rsc</th><th>pfc</th><th>efc</th><th>urbct</th><th>et</th><th>rbb</th><th>wlc</th><th>tlw</th></tr>
+				{% for d in data %}
+					<tr><td>{{ d['date'] }}</td><td>{{ d['rsc'] }}</td><td>{{ d['pfc'] }}</td><td>{{ d['efc'] }}</td><td>{{ d['urbct'] }}</td><td>{{ d['et'] }}</td><td>{{ d['rbb'] }}</td><td>{{ d['wlc'] }}</td><td>{{ d['tlw'] }}</td></tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
+    <script>
+    var lineChartData1 = {
+        labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
+        datasets: [{
+            label: "Total LBAs Written (left)",
+            borderColor: window.chartColors.red,
+            backgroundColor: window.chartColors.red,
+            fill: false,
+
+            data: [
+                {% for d in data %}
+					{{ d['tlw'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1",
+        },{
+            label: "Percent Wear Level (right)",
+            borderColor: window.chartColors.green,
+            backgroundColor: window.chartColors.green,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['wlc'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-2"
+        }]
+    };
+
+	var lineChartData2 = {
+        labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
+        datasets: [{
+            label: "Reallocated Sector Count",
+            borderColor: window.chartColors.red,
+            backgroundColor: window.chartColors.red,
+            fill: false,
+
+            data: [
+                {% for d in data %}
+					{{ d['rsc'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1",
+        }, {
+            label: "Used Reserved Blocks Total",
+            borderColor: window.chartColors.green,
+            backgroundColor: window.chartColors.green,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['urbct'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1"
+        }, {
+            label: "Program Fail Count",
+            borderColor: window.chartColors.blue,
+            backgroundColor: window.chartColors.blue,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['pfc'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1"
+        }, {
+            label: "Erase Fail Count",
+            borderColor: window.chartColors.yellow,
+            backgroundColor: window.chartColors.yellow,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['efc'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1"
+        }]
+    };
+
+    var lineChartData3 = {
+        labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
+        datasets: [{
+            label: "Runtime Bad Block Count",
+            borderColor: window.chartColors.red,
+            backgroundColor: window.chartColors.red,
+            fill: false,
+
+            data: [
+                {% for d in data %}
+					{{ d['rbb'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1",
+        },{
+            label: "Percent Wear Level (right)",
+            borderColor: window.chartColors.green,
+            backgroundColor: window.chartColors.green,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['wlc'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-2"
+        }]
+    };
+
+    var lineChartData4 = {
+        labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
+        datasets: [{
+            label: "Enclosure Temperature",
+            borderColor: window.chartColors.red,
+            backgroundColor: window.chartColors.red,
+            fill: false,
+
+            data: [
+                {% for d in data %}
+					{{ d['et'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1",
+        }]
+    };
+
+
+
+    window.onload = function() {
+        var ctx1 = document.getElementById("canvas1").getContext("2d");
+        window.myLine1 = Chart.Line(ctx1, {
+            data: lineChartData1,
+            options: {
+                responsive: true,
+                hoverMode: 'index',
+                stacked: false,
+                title:{
+                    display: true,
+                    text:'NAND Program Pages Count'
+                },
+                scales: {
+                    yAxes: [{
+                        type: "linear",
+                        display: true,
+                        position: "left",
+                        id: "y-axis-1",
+                    },{
+                        type: "linear",
+                        display: true,
+                        position: "right",
+                        id: "y-axis-2",
+
+                        // grid line settings
+                        gridLines: {
+                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                        },
+                    }],
+                }
+            }
+        });
+
+        var ctx2 = document.getElementById("canvas2").getContext("2d");
+        window.myLine2 = Chart.Line(ctx2, {
+            data: lineChartData2,
+            options: {
+                responsive: true,
+                hoverMode: 'index',
+                stacked: false,
+                title:{
+                    display: true,
+                    text:'Reallocation Events'
+                },
+                scales: {
+                    yAxes: [{
+                        type: "linear",
+                        display: true,
+                        position: "left",
+                        id: "y-axis-1",
+                        }],
+                }
+            }
+        });
+
+        var ctx3 = document.getElementById("canvas3").getContext("2d");
+        window.myLine3 = Chart.Line(ctx3, {
+            data: lineChartData3,
+            options: {
+                responsive: true,
+                hoverMode: 'index',
+                stacked: false,
+                title:{
+                    display: true,
+                    text:'Wear Level'
+                },
+                scales: {
+                    yAxes: [{
+                        type: "linear",
+                        display: true,
+                        position: "left",
+                        id: "y-axis-1",
+                    }, {
+                        type: "linear",
+                        display: true,
+                        position: "right",
+                        id: "y-axis-2",
+
+                        // grid line settings
+                        gridLines: {
+                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                        },
+                    }],
+                }
+            }
+        });
+
+        var ctx4 = document.getElementById("canvas4").getContext("2d");
+        window.myLine4 = Chart.Line(ctx4, {
+            data: lineChartData4,
+            options: {
+                responsive: true,
+                hoverMode: 'index',
+                stacked: false,
+                title:{
+                    display: true,
+                    text:'Temperature'
+                },
+                scales: {
+                    yAxes: [{
+                        type: "linear",
+                        display: true,
+                        position: "left",
+                        id: "y-axis-1",
+                    }],
+                }
+            }
+        });
+    };
+    </script>
+
+{% endblock %}
