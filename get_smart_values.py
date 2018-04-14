@@ -151,5 +151,4 @@ if __name__ == '__main__':
                                   ('248 Unknown_Attribute', 248, 'FTL Program NAND Pages Count', 'fpnpc')
                                   ]
             val = svf.get_values()
-            print val
             dbm.store_values(val)
