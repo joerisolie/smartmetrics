@@ -66,13 +66,24 @@
             ],
             yAxisID: "y-axis-1",
         }, {
-            label: "FTL Program NAND Pages Count (right)",
+            label: "FTL Program NAND Pages Count (left)",
             borderColor: window.chartColors.blue,
             backgroundColor: window.chartColors.blue,
             fill: false,
             data: [
                 {% for d in data %}
 					{{ d['fpnpc'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1"
+        }, {
+            label: "Percent Lifetime Used (right)",
+            borderColor: window.chartColors.green,
+            backgroundColor: window.chartColors.green,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['plr'] }},
 				{% endfor %}
             ],
             yAxisID: "y-axis-2"
@@ -82,7 +93,7 @@
 	var lineChartData2 = {
         labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
         datasets: [{
-            label: "Reallocated Sector Count (left)",
+            label: "Reallocated Sector Count",
             borderColor: window.chartColors.red,
             backgroundColor: window.chartColors.red,
             fill: false,
@@ -94,7 +105,18 @@
             ],
             yAxisID: "y-axis-1",
         }, {
-            label: "Program Fail Count (left)",
+            label: "Reallocation Event Count",
+            borderColor: window.chartColors.green,
+            backgroundColor: window.chartColors.green,
+            fill: false,
+            data: [
+                {% for d in data %}
+					{{ d['rec'] }},
+				{% endfor %}
+            ],
+            yAxisID: "y-axis-1"
+        }, {
+            label: "Program Fail Count",
             borderColor: window.chartColors.blue,
             backgroundColor: window.chartColors.blue,
             fill: false,
@@ -105,24 +127,13 @@
             ],
             yAxisID: "y-axis-1"
         }, {
-            label: "Erase Fail Count (left)",
+            label: "Erase Fail Count",
             borderColor: window.chartColors.yellow,
             backgroundColor: window.chartColors.yellow,
             fill: false,
             data: [
                 {% for d in data %}
 					{{ d['efc'] }},
-				{% endfor %}
-            ],
-            yAxisID: "y-axis-1"
-        }, {
-            label: "Reallocation Event Count (right)",
-            borderColor: window.chartColors.green,
-            backgroundColor: window.chartColors.green,
-            fill: false,
-            data: [
-                {% for d in data %}
-					{{ d['rec'] }},
 				{% endfor %}
             ],
             yAxisID: "y-axis-1"
@@ -155,7 +166,7 @@
             ],
             yAxisID: "y-axis-1"
         }, {
-            label: "Percent Lifetime Remaining (right)",
+            label: "Percent Lifetime Used (right)",
             borderColor: window.chartColors.green,
             backgroundColor: window.chartColors.green,
             fill: false,
@@ -205,7 +216,7 @@
                         display: true,
                         position: "left",
                         id: "y-axis-1",
-                    }, {
+                    },{
                         type: "linear",
                         display: true,
                         position: "right",
@@ -213,7 +224,7 @@
 
                         // grid line settings
                         gridLines: {
-                            drawOnChartArea: false,
+                            drawOnChartArea: false, // only want the grid lines for one axis to show up
                         },
                     }],
                 }
@@ -237,17 +248,7 @@
                         display: true,
                         position: "left",
                         id: "y-axis-1",
-                    }, {
-                        type: "linear",
-                        display: true,
-                        position: "right",
-                        id: "y-axis-2",
-
-                        // grid line settings
-                        gridLines: {
-                            drawOnChartArea: false,
-                        },
-                    }],
+                        }],
                 }
             }
         });
