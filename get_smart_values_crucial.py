@@ -7,10 +7,8 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-class SmartValue(Base):
+class SmartValueCrucial(Base):
     __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     date = Column(String(20), nullable=False)
     device = Column(String(10), nullable=False)
@@ -26,7 +24,7 @@ class SmartValue(Base):
     fpnpc = Column(Integer)
 
 
-class SmartValueManager(object):
+class SmartValueManagerCrucial(object):
     device = None
     parameters = None
     sqlite_file = None
@@ -38,7 +36,7 @@ class SmartValueManager(object):
         if process.returncode != 0:
             raise OSError('Error %s' % process.returncode)
   
-        out = SmartValue()
+        out = SmartValueCrucial()
         out.date = datetime.datetime.now()
         out.device = self.device
         for p in self.parameters:
@@ -72,7 +70,7 @@ class SmartValueManager(object):
 
 if __name__ == '__main__':
     if sys.argv[1]:
-        svf = SmartValueManager()
+        svf = SmartValueManagerCrucial()
         svf.sqlite_file = './smartdb.sqlite'
         if sys.argv[1] == 'createdb':
              svf.create_db()
