@@ -160,7 +160,7 @@
     var lineChartData4 = {
         labels: [{% for d in data %}"{{ d['date'] }}",{% endfor %}],
         datasets: [{
-            label: "Enclosure Temperature",
+            label: "Airflow Temperature",
             borderColor: window.chartColors.red,
             backgroundColor: window.chartColors.red,
             fill: false,
@@ -186,7 +186,7 @@
                 stacked: false,
                 title:{
                     display: true,
-                    text:'NAND Program Pages Count'
+                    text:'Total LBAs Written'
                 },
                 scales: {
                     yAxes: [{

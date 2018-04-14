@@ -131,7 +131,7 @@ if __name__ == '__main__':
                                   ('181 Program_Fail_Cnt_Total', 181, 'Program Fail Count', 'pfc'),
                                   ('182 Erase_Fail_Count_Total', 182, 'Erase Fail Count', 'efc'),
                                   ('179 Used_Rsvd_Blk_Cnt_Tot', 179, 'Used Reserved Blocks Total', 'urbct'),
-                                  ('194 Temperature_Celsius', 194, 'Enclosure Temperature', 'et'),
+                                  ('190 Airflow_Temperature_Cel', 194, 'Airflow Temperature', 'et'),
                                   ('183 Runtime_Bad_Block', 183, 'Runtime Bad Block Count', 'rbb'),
                                   ('177 Wear_Leveling_Count', 177, 'Percent Wear Level', 'wlc'),
                                   ('241 Total_LBAs_Written', 241, 'Total LBAs Written', 'tlw')
