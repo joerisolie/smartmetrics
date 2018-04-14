@@ -4,7 +4,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from get_smart_values_crucial import SmartValue, Base
+from get_smart_values import SmartValueCrucial, SmartValueSamsung, Base
 
 if __name__ == '__main__':
     app = Flask(__name__)
