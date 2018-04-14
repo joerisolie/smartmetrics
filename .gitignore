@@ -1,2 +1,3 @@
 venv
 smartdb.sqlite
+*.pyc
